@@ -9,8 +9,8 @@
       state: present
       update_cache: true
   - name: Gero a senha criptograda
-      ansible.builtin.shell: "mkpasswd --method=sha-512 {{ senha }}"
-      register: cripto_pwd
+    ansible.builtin.shell: "mkpasswd --method=sha-512 {{ senha }}"
+    register: cripto_pwd
   - name: Verificar a senha
     ansible.builtin.debug:
       msg: "{{ cripto_pwd.stdout }}"      
@@ -22,11 +22,11 @@
       append: yes
       password: "{{ cripto_pwd.stdout }}"
   - name: Criar o diretorio .ssh
-      path: "/home/{{ usuario }}/.ssh"
-      state: directory
-      group: "{{ usuario }}"
-      owner: "{{ usuario }}"
-      recurse: true
+    path: "/home/{{ usuario }}/.ssh"
+    state: directory
+    group: "{{ usuario }}"
+    owner: "{{ usuario }}"
+    recurse: true
   - name: Copiar a chave ssh
     ansible.builtin.copy:
       src: "{{ chave_publica }}"
