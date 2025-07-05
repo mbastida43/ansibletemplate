@@ -8,50 +8,62 @@
         name: whois
         state: present
         update_cache: true
-    - name: Gero a senha criptograda
+
+    - name: Gero a senha criptografada
       ansible.builtin.shell: "mkpasswd --method=sha-512 {{ senha }}"
       register: cripto_pwd
+
     - name: Verificar a senha
       ansible.builtin.debug:
         msg: "{{ cripto_pwd.stdout }}"
+
     - name: Criar o usuario
-      ansible.builtin.debug:
+      ansible.builtin.user:
         name: "{{ usuario }}"
         shell: /bin/bash
         groups: sudo
         append: yes
         password: "{{ cripto_pwd.stdout }}"
-    - name: Criar o diretorio .ssh
-      path: "/home/{{ usuario }}/.ssh"
-      state: directory
-      group: "{{ usuario }}"
-      owner: "{{ usuario }}"
-      recurse: true
+
+    - name: Criar o diretório .ssh
+      ansible.builtin.file:
+        path: "/home/{{ usuario }}/.ssh"
+        state: directory
+        owner: "{{ usuario }}"
+        group: "{{ usuario }}"
+        recurse: true
+        mode: '0700'
+
     - name: Copiar a chave ssh
       ansible.builtin.copy:
         src: "{{ chave_publica }}"
         dest: "/home/{{ usuario }}/.ssh/authorized_keys"
+        owner: "{{ usuario }}"
+        group: "{{ usuario }}"
+        mode: '0600'
 
-    - name: Instalar nginx executar pagina Web
+    - name: Copiar a página web que vai ser usada
+      ansible.builtin.copy:
+        src: /home/marlonbastida/aula/index.html
+        dest: "/home/{{ usuario }}/index.html"
+      become: true
       remote_user: "{{ usuario }}"
-      hosts: all
-      tasks:
-        - name: Copiar a página web que vai ser usada
-          ansible.builtin.copy:
-          src: /home/marlonbastida/aula/index.html
-          dest: "/home/{{ usuario }}/index.html"
-        - name: Instalar o nginx
-          become: true
-          ansible.builtin.apt:
-            name: nginx
-            update_cache: yes
-        - name: Enviar o nginx.conf com a nova configuração
-          become: true
-          ansible.bultin.copy:
-            src: ./nginx.conf.j2
-            dest: /etc/nginx/nginx.conf
-        - name: Reiniciar o servico do nginx
-          become: true
-          ansible.bultin.service:
-            name: nginx
-            state: restarted
+
+    - name: Instalar o nginx
+      ansible.builtin.apt:
+        name: nginx
+        update_cache: yes
+      become: true
+
+    - name: Enviar o nginx.conf com a nova configuração
+      ansible.builtin.copy:
+        src: ./nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      become: true
+
+    - name: Reiniciar o serviço do nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+      become: true
+
