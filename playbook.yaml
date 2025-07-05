@@ -44,7 +44,7 @@
 
     - name: Copiar a página web que vai ser usada
       ansible.builtin.copy:
-        src: /home/marlonbastida/aula/index.html
+        src: /home/marlonbastida/index.html
         dest: "/home/{{ usuario }}/index.html"
       become: true
       remote_user: "{{ usuario }}"
