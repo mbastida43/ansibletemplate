@@ -15,7 +15,7 @@
       ansible.builtin.debug:
         msg: "{{ cripto_pwd.stdout }}"
     - name: Criar o usuario
-      ansible.bultin.debug:
+      ansible.buIltin.debug:
         name: "{{ usuario }}"
         shell: /bin/bash
         groups: sudo
