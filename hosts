@@ -1,0 +1,8 @@
+[maquinas]
+172.233.186.72
+172.233.186.80
+172.233.186.82
+
+[maquinas:vars]
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_user=root
