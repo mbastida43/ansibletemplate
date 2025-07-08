@@ -32,38 +32,35 @@
         owner: "{{ usuario }}"
         group: "{{ usuario }}"
         recurse: true
-        mode: '0700'
 
     - name: Copiar a chave ssh
       ansible.builtin.copy:
         src: "{{ chave_publica }}"
         dest: "/home/{{ usuario }}/.ssh/authorized_keys"
-        owner: "{{ usuario }}"
-        group: "{{ usuario }}"
-        mode: '0600'
 
+    - name: Instalar o nginx e executar a pagina
+      remote_user: "{{ usuario }}"
+      hosts: all
+      tasks:
     - name: Copiar a página web que vai ser usada
       ansible.builtin.copy:
-        src: /home/marlonbastida/index.html
+        src: /home/marlon/aula/ansible_templatefinal/index.html
         dest: "/home/{{ usuario }}/index.html"
-      become: true
-      remote_user: "{{ usuario }}"
-
     - name: Instalar o nginx
+      become: true
       ansible.builtin.apt:
         name: nginx
         update_cache: yes
-      become: true
-
     - name: Enviar o nginx.conf com a nova configuração
-      ansible.builtin.copy:
+      become: true
+      ansible.builtin.template:
         src: ./nginx.conf.j2
         dest: /etc/nginx/nginx.conf
-      become: true
 
     - name: Reiniciar o serviço do nginx
+      become: true
       ansible.builtin.service:
         name: nginx
         state: restarted
-      become: true
+
 
