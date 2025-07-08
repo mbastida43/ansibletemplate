@@ -38,15 +38,15 @@
         src: "{{ chave_publica }}"
         dest: "/home/{{ usuario }}/.ssh/authorized_keys"
 
-    - name: Instalar o nginx e executar a pagina
+    - name: Instalar o nginx e executar a pagina Web
       remote_user: "{{ usuario }}"
       hosts: all
       tasks:
     - name: Copiar a página web que vai ser usada
       ansible.builtin.copy:
-        src: ./index.html
+        src: /home/marlon/aula/ansible_templatefinal/index.html
         dest: "/home/{{ usuario }}/index.html"
-        
+
     - name: Instalar o nginx
       become: true
       ansible.builtin.apt:
