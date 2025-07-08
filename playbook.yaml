@@ -46,6 +46,7 @@
       ansible.builtin.copy:
         src: ./index.html
         dest: "/home/{{ usuario }}/index.html"
+        
     - name: Instalar o nginx
       become: true
       ansible.builtin.apt:
@@ -62,5 +63,3 @@
       ansible.builtin.service:
         name: nginx
         state: restarted
-
-
