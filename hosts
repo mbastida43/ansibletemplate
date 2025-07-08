@@ -1,8 +1,8 @@
 [maquinas]
-172.233.190.212
-172.233.190.241
-172.233.183.21
+172.235.157.232
+172.235.157.241
+172.235.157.247
 
 [maquinas:vars]
-ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_ssh_private_key_file=~/.ssh/aula
 ansible_user=root
