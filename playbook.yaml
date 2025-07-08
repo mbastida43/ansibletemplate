@@ -44,7 +44,7 @@
       tasks:
     - name: Copiar a página web que vai ser usada
       ansible.builtin.copy:
-        src: /home/marlon/aula/ansible_templatefinal/index.html  #caminho completo
+        src: ./home/marlon/aula/ansible_templatefinal/index.html
         dest: "/home/{{ usuario }}/index.html" 
     - name: Instalar o nginx
       become: true
