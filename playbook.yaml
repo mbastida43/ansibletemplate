@@ -42,23 +42,23 @@
       remote_user: "{{ usuario }}"
       hosts: all
       tasks:
-      - name: Copiar a página web que vai ser usada
-          ansible.builtin.copy:
-          src: /home/marlon/aula/ansible_templatefinal/index.html
-          dest: "/home/{{ usuario }}/index.html" 
-      - name: Instalar o nginx
-        become: true
-        ansible.builtin.apt:
-          name: nginx
-          update_cache: yes
-      - name: Enviar o nginx.conf com a nova configuração
-        become: true
-        ansible.builtin.template:
-        src: ./nginx.conf.j2
-        dest: /etc/nginx/nginx.conf
+        - name: Copiar a página web que vai ser usada
+            ansible.builtin.copy:
+            src: /home/marlon/aula/ansible_templatefinal/index.html
+            dest: "/home/{{ usuario }}/index.html" 
+        - name: Instalar o nginx
+          become: true
+          ansible.builtin.apt:
+            name: nginx
+            update_cache: yes
+        - name: Enviar o nginx.conf com a nova configuração
+          become: true
+          ansible.builtin.template:
+          src: ./nginx.conf.j2
+          dest: /etc/nginx/nginx.conf
 
-      - name: Reiniciar o serviço do nginx
-        become: true
-        ansible.builtin.service:
-          name: nginx
-          state: restarted
+        - name: Reiniciar o serviço do nginx
+          become: true
+          ansible.builtin.service:
+            name: nginx
+            state: restarted
