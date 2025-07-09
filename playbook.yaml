@@ -54,8 +54,8 @@
     - name: Enviar o nginx.conf com a nova configuração
       become: true
       ansible.builtin.template:
-      src: ./nginx.conf.j2
-      dest: /etc/nginx/nginx.conf
+        src: ./nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
 
     - name: Reiniciar o serviço do nginx
       become: true
